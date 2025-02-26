@@ -93,6 +93,103 @@ void showProducts() {
 	fclose(file);
 }
 
+// Funcion para eliminar un producto
+
+void deleteProduct() {
+
+	FILE *file = fopen("products.dat", "rb");
+	if(!file) {
+		printf("No hay productos registrados \n");
+		return;
+	}
+
+	FILE *tempFile = fopen("temp.dat", "wb");
+	if (!tempFile) {
+		printf("Error al crear archivo temporal.\n");
+		fclose(file);
+		return;
+	}
+
+	int idToDelete, found;
+	printf("Ingrese el ID del producto a eliminar: ");
+	scanf("%d", &idToDelete);
+
+	Product p;
+	found = 0;
+
+	while (fread(&p, sizeof(Product), 1, file)) {
+		if (p.id == idToDelete) {
+			found = 1;
+			printf("Producto eliminado correctamente.\n");
+		} else {
+			fwrite(&p, sizeof(Product), 1, tempFile); // Guardamos solo los productos que NO se eliminan
+		}
+	}
+
+	fclose(file);
+	fclose(tempFile);
+
+	if (found) {
+		remove("products.dat");  // Eliminamos el archivo original
+		rename("temp.dat", "products.dat"); // Renombramos el temporal
+	} else {
+		printf("Producto con ID %d no encontrado.\n", idToDelete);
+		remove("temp.dat"); // Eliminamos el archivo temporal si no hubo cambios
+	}
+}
+
+// Función para actualizar un producto
+void updateProduct() {
+	FILE *file = fopen("products.dat", "rb");
+	if (!file) {
+		printf("No hay productos registrados.\n");
+		return;
+	}
+
+	FILE *tempFile = fopen("temp.dat", "wb");
+	if (!tempFile) {
+		printf("Error al crear archivo temporal.\n");
+		fclose(file);
+		return;
+	}
+
+	int idToUpdate;
+	printf("Ingrese el ID del producto a actualizar: ");
+	scanf("%d", &idToUpdate);
+
+	Product p;
+	int found = 0;
+
+	while (fread(&p, sizeof(Product), 1, file)) {
+		if (p.id == idToUpdate) {
+			found = 1;
+			printf("Ingrese el nuevo nombre: ");
+			scanf(" %[^\n]", p.name);
+			printf("Ingrese la nueva descripcion: ");
+			scanf(" %[^\n]", p.desc);
+			printf("Ingrese el nuevo precio: ");
+			scanf("%f", &p.price);
+			printf("Ingrese el nuevo codigo de barras: ");
+			scanf("%s", p.bar_code);
+			printf("Producto actualizado exitosamente.\n");
+		}
+		fwrite(&p, sizeof(Product), 1, tempFile);
+	}
+
+	fclose(file);
+	fclose(tempFile);
+
+	if (found) {
+		remove("products.dat");
+		rename("temp.dat", "products.dat");
+	} else {
+		printf("Producto con ID %d no encontrado.\n", idToUpdate);
+		remove("temp.dat");
+	}
+}
+
+
+
 int main() {
 	int option;
 
@@ -100,7 +197,9 @@ int main() {
 		printf("\n--- Menu ---\n");
 		printf("1. Agregar Producto\n");
 		printf("2. Mostrar Productos\n");
-		printf("3. Salir\n");
+		printf("3. Actualizar Producto\n");
+		printf("4. Eliminar Producto\n");
+		printf("5. Salir\n");
 		printf("Seleccione una opcion: ");
 		scanf("%d", &option);
 
@@ -112,12 +211,18 @@ int main() {
 				showProducts();
 				break;
 			case 3:
+				updateProduct();
+				break;
+			case 4:
+				deleteProduct();
+				break;
+			case 5:
 				printf("Saliendo...\n");
 				break;
 			default:
 				printf("Opcion inválida.\n");
 		}
-	} while (option != 3);
+	} while (option != 5);
 
 	return 0;
 }
