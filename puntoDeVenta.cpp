@@ -2,16 +2,155 @@
 #include <stdlib.h>
 #include <string.h>
 
-// Estructura de un producto
+// Estructura
+
 typedef struct {
 	int id;
 	char name[50];
 	char desc[100];
 	char bar_code[13];
 	float price;
-} Product;
+} Product;  // Estructura de un producto
 
-// Función para agregar un producto
+
+typedef struct {
+	int id;
+	char name[50];
+	int role; // 1: Administrador, 2: Cajero, etc.
+	char pass[20]; // En un sistema real, se debería cifrar
+} User; // Estructura de usuario
+
+typedef struct {
+	char bussinesName[50];
+	float taxes;  // Porcentaje de impuesto (ej. 16.0 para 16%)
+	char currency[10];  // "MXN", "USD", etc.
+	char admin[50];
+} ConfigPOS; // Estructura de la configuración
+
+
+// Funciones para la configuracion de sistema ---
+
+// Funcion para configurar el sistema
+void configSystem() {
+	FILE *file = fopen("config.dat", "wb"); // Sobreescribimos la configuracion
+	if (!file) {
+		printf("Error al abrir el archivo \n");
+		return;
+	}
+
+	ConfigPOS c;
+	User superUser;
+
+	// Solicitar nombre de la empresa
+	do {
+		printf("Nombre de la empresa: ");
+		scanf(" %49[^\n]", c.bussinesName);
+		if (strlen(c.bussinesName) == 0) {
+			printf("❌ El nombre no puede estar vacio. \n");
+		}
+	} while (strlen(c.bussinesName) == 0);
+
+	// Solicitar porcentaje de impuestos
+	do {
+		printf("Porcentaje de Impuestos (IVA): ");
+		scanf("%f", &c.taxes);
+		if (c.taxes <= 0) {
+			printf("❌ El Impuesto debe ser un numero positivo mayor a 0.\n");
+		}
+	} while (c.taxes <= 0);
+
+	// Solicitar tipo de moneda
+	do {
+		printf("Ingresa el tipo de moneda (MXN o USD): ");
+		scanf(" %9s", c.currency);
+		if (strcmp(c.currency, "MXN") != 0 && strcmp(c.currency, "USD") != 0) {
+			printf("❌ La moneda debe ser MXN o USD.\n");
+		}
+	} while (strcmp(c.currency, "MXN") != 0 && strcmp(c.currency, "USD") != 0);
+
+	// Crear superusuario
+	printf("\n--- Creacion del Superusuario ---\n");
+	superUser.id = 1;
+	superUser.role = 1; // Administrador
+
+	printf("Nombre del Superusuario: ");
+	scanf(" %49[^\n]", superUser.name);
+
+	printf("Contraseña del Superusuario: ");
+	scanf(" %19s", superUser.pass);
+
+	// Guardar nombre del administrador en ConfigPOS
+	strcpy(c.admin, superUser.name);
+
+	// Guardar la configuracion en el archivo
+	fwrite(&c, sizeof(ConfigPOS), 1, file);
+	fclose(file);
+
+	// Guardar superusuario en otro archivo
+	file = fopen("users.dat", "wb");
+	if (!file) {
+		printf("Error al abrir el archivo de usuarios\n");
+		return;
+	}
+	fwrite(&superUser, sizeof(User), 1, file);
+	fclose(file);
+
+	printf("\n✅ Configuracion guardada exitosamente.\n");
+}
+
+// Funcion para verificar si el sistema ya está configurado
+int isConfigured() {
+	FILE *file = fopen("config.dat", "rb");
+	if (!file) {
+		return 0; // No existe el archivo, no está configurado
+	}
+
+	fseek(file, 0, SEEK_END); // Mueve el puntero al final
+	long size = ftell(file);  // Obtiene la posición actual (tamaño del archivo)
+	fclose(file);
+
+	return (size > 0); // Retorna 1 si tiene datos, 0 si está vacío
+}
+
+/// funciones autenticar usuarios
+
+int validatedUser() {
+	FILE *file = fopen("users.dat", "rb");
+	if (!file) {
+		printf("❌ No hay usuarios registrados.\n");
+		return 0; // Retornamos 0 indicando fallo
+	}
+
+	char userToFound[50], password[20];
+	printf("Ingrese el nombre de usuario: ");
+	scanf("%s", userToFound);
+
+	printf("Ingrese la password: ");
+	scanf("%s", password);
+
+	User u;
+	int found = 0;
+
+	while (fread(&u, sizeof(User), 1, file)) {
+		if (strcmp(u.name, userToFound) == 0 && strcmp(u.pass, password) == 0) {
+			found = 1;
+			printf("✅ Usuario autenticado correctamente.\n");
+			break; // Salimos del bucle porque ya encontramos el usuario
+		}
+	}
+
+	fclose(file);
+
+	if (!found) {
+		printf("Usuario o password incorrectos.\n");
+	}
+
+	return found; // Retornamos 1 si autenticó correctamente, 0 si falló
+}
+
+//CRUD de Productos
+
+// Función para agregar o crear un producto
 void addProduct() {
 	FILE *file = fopen("products.dat", "ab");
 	if(!file) {
@@ -73,7 +212,7 @@ void addProduct() {
 	printf("Producto guardado exitosamente.\n");
 }
 
-// Función para mostrar la lista de productos
+// Función para mostrar o leer la lista de productos
 void showProducts() {
 	FILE *file = fopen("products.dat", "rb"); // Abrimos en modo lectura binaria
 	if (!file) {
@@ -94,7 +233,6 @@ void showProducts() {
 }
 
 // Funcion para eliminar un producto
-
 void deleteProduct() {
 
 	FILE *file = fopen("products.dat", "rb");
@@ -188,9 +326,8 @@ void updateProduct() {
 	}
 }
 
-
-
-int main() {
+// funcion para opciones del programa
+void menu() {
 	int option;
 
 	do {
@@ -220,9 +357,35 @@ int main() {
 				printf("Saliendo...\n");
 				break;
 			default:
-				printf("Opcion inválida.\n");
+				printf("Opcion invalida.\n");
 		}
 	} while (option != 5);
+}
+
+
+int main() {
+	int config, validated;
+	config = 0;
+	validated = 0;
+
+	// Valida configuración
+	if (isConfigured()) {
+		printf("Sistema configurado.\n");
+	} else {
+		printf("El sistema NO esta configurado. Iniciando configuracion...\n");
+		configSystem();
+		config = 1;
+	}
+	// Valida Autentificación de usuario
+	if(!validatedUser()) {
+		validatedUser();
+		validated = 1;
+	}
+
+	do {
+		menu();
+	} while(config != 0 && validated != 0);
+
 
 	return 0;
 }
