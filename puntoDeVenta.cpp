@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 
-// Estructura
+// Estructuras ----
 
 typedef struct {
 	int id;
@@ -11,7 +12,6 @@ typedef struct {
 	char bar_code[13];
 	float price;
 } Product;  // Estructura de un producto
-
 
 typedef struct {
 	int id;
@@ -98,7 +98,8 @@ void configSystem() {
 	printf("\n✅ Configuracion guardada exitosamente.\n");
 }
 
-// Funcion para verificar si el sistema ya está configurado
+// Funcion para verificar si el sistema ya está configuradoc ---
+
 int isConfigured() {
 	FILE *file = fopen("config.dat", "rb");
 	if (!file) {
@@ -110,6 +111,63 @@ int isConfigured() {
 	fclose(file);
 
 	return (size > 0); // Retorna 1 si tiene datos, 0 si está vacío
+}
+
+// Leer la configuracion del sistema
+void showConfig() {
+	FILE *file = fopen("config.dat", "rb"); // Abrimos en modo lectura binaria
+	if (!file) {
+		printf("No hay configuracion.\n");
+		return;
+	}
+
+	ConfigPOS c;
+	printf("\n--- Configuracion del sistema ---\n");
+
+	// Leer el archivo hasta el final
+	while (fread(&c, sizeof(ConfigPOS), 1, file)) {
+		printf("Nombre de la empresa: %s | Impuestos(IVA): %2.f | Tipo de Moneda: %s | Administrador: %s \n",
+		       c.bussinesName, c.taxes, c.currency, c.admin );
+	}
+
+	fclose(file);
+}
+
+// funcion para elminar la configuración
+void deleteConfig() {
+	FILE *fileConfig = fopen("config.dat", "rb");
+	FILE *fileUsers = fopen("users.dat", "rb");
+
+	// Si ambos archivos no existen, no hay nada que eliminar
+	if (!fileConfig && !fileUsers) {
+		printf("⚠️ No hay configuración ni usuarios registrados.\n");
+		return;
+	}
+
+	// Cerramos los archivos si fueron abiertos
+	if (fileConfig) fclose(fileConfig);
+	if (fileUsers) fclose(fileUsers);
+
+	// Preguntar al usuario si desea eliminar los archivos
+	char option[10]; // Suficientemente grande para "si" o "no"
+	printf("\nSe eliminarán la configuracion y los usuarios del sistema de forma permanente.\n");
+	printf("Estas seguro de eliminar la configuracion? (si / no): ");
+	scanf(" %9s", option); // Leemos la respuesta
+
+	// Convertir a minúsculas para evitar errores con "Si" o "SI"
+	for (int i = 0; option[i]; i++) {
+		option[i] = tolower(option[i]);
+	}
+
+	if (strcmp(option, "si") == 0) {
+		printf("Eliminando configuracion...\n");
+		remove("config.dat");
+		remove("users.dat");
+		printf("Configuracion eliminada correctamente.\n");
+		return;
+	} else {
+		printf("Operacion cancelada. Regresando al menú...\n");
+	}
 }
 
 /// funciones autenticar usuarios
@@ -336,7 +394,9 @@ void menu() {
 		printf("2. Mostrar Productos\n");
 		printf("3. Actualizar Producto\n");
 		printf("4. Eliminar Producto\n");
-		printf("5. Salir\n");
+		printf("5. Mostrar configuracion del sistema.\n");
+		printf("6. Elminar configuracion\n");
+		printf("7. Salir\n");
 		printf("Seleccione una opcion: ");
 		scanf("%d", &option);
 
@@ -354,12 +414,18 @@ void menu() {
 				deleteProduct();
 				break;
 			case 5:
+				showConfig();
+				break;
+			case 6:
+				deleteConfig();
+				break;
+			case 7:
 				printf("Saliendo...\n");
 				break;
 			default:
 				printf("Opcion invalida.\n");
 		}
-	} while (option != 5);
+	} while (option != 7);
 }
 
 
@@ -367,7 +433,7 @@ int main() {
 	int config, validated;
 	config = 0;
 	validated = 0;
-
+	printf("Bienvenido a tu terminal punto de venta \n");
 	// Valida configuración
 	if (isConfigured()) {
 		printf("Sistema configurado.\n");
