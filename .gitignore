@@ -1,0 +1,7 @@
+.vscode/
+puntoDeVenta.c
+build/src
+build/*.o
+bin/*.exe
+data/*.log
+data/*.dat
