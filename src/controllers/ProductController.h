@@ -7,9 +7,9 @@
 #include "../views/ProductView.h"
 // Declaraciones para ProductController (controller)
 
-void addProduct();
-void showProducts();
+void createProduct();
+void readProducts();
 void updateProduct();
 void deleteProduct();
-
+void handleMenuProduct(int rol);
 #endif

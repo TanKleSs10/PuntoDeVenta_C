@@ -16,11 +16,19 @@ int saveProduct(const Product *product)
 
 int getAllProducts(Product *products, int maxSize)
 {
-    FILE *file = openFile(PRODUCTS_FILE, "rb", "Error al abrir el archivo de productos");
+    FILE *file = fopen(PRODUCTS_FILE, "rb");
     if (!file)
+    {
+        logError("Error al abrir el archivo de productos");
         return 0;
+    }
 
     int count = fread(products, sizeof(Product), maxSize, file);
+    if (count <= 0 && !feof(file))
+    {
+        logError("Error al leer el archivo de productos");
+    }
+
     fclose(file);
     return count;
 }

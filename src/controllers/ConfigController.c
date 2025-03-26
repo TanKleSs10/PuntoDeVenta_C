@@ -115,10 +115,37 @@ void updateConfig()
     // Feedback al usuario
     if (configSaved && userUpdated)
     {
-        printf("Configuración y usuario admin actualizados correctamente.\n");
+        printf("Configuracion y usuario admin actualizados correctamente.\n");
     }
     else
     {
         printf("Error al guardar cambios. Verifique los archivos.\n");
     }
+}
+
+void handleMenuConfig()
+{
+    int option;
+    do
+    {
+        showMenuConfig();
+        scanf("%d", &option);
+        getchar(); // Consumir salto de línea
+
+        switch (option)
+        {
+        case 1:
+            updateConfig();
+            break;
+        case 2:
+            showConfig();
+            break;
+        case 3:
+            deleteConfig();
+            break;
+        default:
+            printf("Opcion no valida");
+            break;
+        }
+    } while (option != 0);
 }

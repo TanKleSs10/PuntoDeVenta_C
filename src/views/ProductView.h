@@ -7,10 +7,13 @@
 
 // Declaraciones para ProductView (view)
 
-void showProduct(Product p);
+void showProduct(Product *p);
 void inputProductData(Product *p);
 void inputUpdateProductData(Product *p);
 void inputSearchProductUpdateData(int *id, const char *action);
-void showAllProducts(Product products[], int count);
+void showAllProducts(Product *products, int count);
+void showMenuProduct();
+void showMenuCashierProduct();
+void showMenuSearchProduct();
 
 #endif

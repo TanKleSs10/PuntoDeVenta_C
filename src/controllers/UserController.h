@@ -6,9 +6,10 @@
 #include <time.h>
 // Declaraciones para UserController (controller)
 
-void createUser(); // Agregar usuario
-void showUsers();  // Mostrar usuarios
-void updateUser(); // Actualizar usuario
-void deleteUser(); // Eliminar usuario
+void createUser();     // Agregar usuario
+void showUsers();      // Mostrar usuarios
+void updateUser();     // Actualizar usuario
+void deleteUser();     // Eliminar usuario
+void handleMenuUser(); // gestiona las opciones del modulo usuario
 
 #endif

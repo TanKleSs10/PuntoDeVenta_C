@@ -149,3 +149,23 @@ void showNoUserMessage()
 {
     printf("No hay usuarios registrados.\n");
 }
+
+// menu para superusuario y admin
+void showMenuUser()
+{
+    printf("\n--- Menu del Superusuario ---\n");
+    printf("1. Crear usuario\n");
+    printf("2. Listar usuarios\n");
+    printf("3. Buscar usuario\n");
+    printf("4. Modificar usuario\n");
+    printf("5. Eliminar usuario\n");
+    printf("0. Salir\n");
+}
+
+void showMenuSearchUser()
+{
+    printf("\nOpciones de busqueda de usuarios:\n");
+    printf("Buscar usuario por ID\n");
+    printf("Buscar usuario por nombre\n");
+    printf("Salir\n");
+}

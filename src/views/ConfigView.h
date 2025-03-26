@@ -12,4 +12,6 @@ void showConfigData(const ConfigPOS *c);
 int confirmDeleteConfig();
 
 void showNoConfigMessage();
+
+void showMenuConfig();
 #endif

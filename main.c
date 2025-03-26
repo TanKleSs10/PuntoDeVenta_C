@@ -20,5 +20,7 @@ int main(void)
     }
     // Mostrar menú principal
     welcome();
+    showMenu();
+
     return 0;
 }

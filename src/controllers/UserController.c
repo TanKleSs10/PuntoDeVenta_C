@@ -122,3 +122,38 @@ void deleteUser()
         printf("Error al eliminar usuario.\n");
     }
 }
+
+void handleMenuUser()
+{
+    User user;
+    int option;
+    do
+    {
+        showMenuUser();
+        scanf("%d", &option);
+        switch (option)
+        {
+        case 1:
+            createUser();
+            break;
+        case 2:
+            showUsers();
+            break;
+        case 3:
+            //? por implementar
+            printf("buscar usuario");
+            break;
+        case 4:
+            updateUser();
+            break;
+        case 5:
+            deleteUser();
+            break;
+        case 0:
+            printf("Regresando al menú principal...\n");
+            break;
+        default:
+            printf("Opcion no valida. Intente nuevamente.\n");
+        }
+    } while (option != 0);
+}

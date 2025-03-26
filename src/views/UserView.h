@@ -19,4 +19,9 @@ char *inputSearchUserDataByName();
 int inputSelectSearchUserData();
 
 void showNoUserMessage();
+
+void showMenuUser();
+
+void showMenuSearchUser();
+
 #endif

@@ -48,11 +48,20 @@ void showConfigData(const ConfigPOS *c)
     printf("Administrador: %s\n", c->admin);
 }
 
+void showMenuConfig() // solo superadmin
+{
+    printf("\nOpciones de configuracion:\n");
+    printf("1. Editar configuracion del sitema\n");
+    printf("2. Mostrar configuracion actual\n");
+    printf("3. Eliminar configuracion\n");
+    printf("0. Salir\n");
+}
+
 int confirmDeleteConfig()
 {
     char option[10];
     printf("\nSe eliminaran la configuracion y los usuarios de forma permanente.\n");
-    printf("Estas seguro? (si / no): ");
+    printf("Estas seguro? (si / no): \n");
     scanf(" %9s", option);
 
     // Convertir a minúsculas

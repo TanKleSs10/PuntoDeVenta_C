@@ -17,6 +17,13 @@ typedef struct
     time_t CreatedAt;
 } Session;
 
+typedef enum
+{
+    ROLE_SUPERADMIN,
+    ROLE_ADMIN,
+    ROLE_CAJERO
+} RoleUser;
+
 int saveSession(Session *session);
 Session *getSession();
 int removeSession();

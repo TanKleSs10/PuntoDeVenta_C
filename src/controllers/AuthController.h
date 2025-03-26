@@ -10,9 +10,13 @@
 #include "../models/AuthModel.h"
 #include "../models/ConfigModel.h"
 #include "../views/AuthView.h"
+#include "./UserController.h"
+#include "./ConfigController.h"
+#include "./ProductController.h"
 // Declaraciones para AuthController (controller)
 
 void login();
+void logout();
 int isLoggedIn();
 void welcome();
 

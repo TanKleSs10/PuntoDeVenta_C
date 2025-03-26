@@ -12,5 +12,5 @@ void showConfig();
 void deleteConfig();
 void validateConfig();
 void updateConfig();
-
+void handleMenuConfig();
 #endif
