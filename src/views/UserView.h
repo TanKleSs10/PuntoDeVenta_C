@@ -10,7 +10,9 @@ void inputUserData(User *user);
 
 void inputUserDataForUpdate(User *user);
 
-void showUserData(const User *user, int size);
+void showUsersData(const User *user, int size);
+
+void showUser(const User *user);
 
 int inputSearchUserDataByid();
 

@@ -9,6 +9,7 @@
 
 void createProduct();
 void readProducts();
+void searchProduct();
 void updateProduct();
 void deleteProduct();
 void handleMenuProduct(int rol);

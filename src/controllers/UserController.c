@@ -31,7 +31,64 @@ void showUsers()
 {
     User users[100];
     int size = getAllUsers(users, 100);
-    showUserData(users, size);
+    showUsersData(users, size);
+}
+
+void searchUser()
+{
+    User *user = NULL;
+    int option;
+    do
+    {
+        showMenuSearchUser();
+        printf("Seleccione una opcion: ");
+        if (scanf("%d", &option) != 1)
+        {
+            printf("Error: Entrada no valida. Intente nuevamente.\n");
+            while (getchar() != '\n')
+                ; // Limpiar buffer
+            continue;
+        }
+        switch (option)
+        {
+        case 1:
+            int id;
+            printf("ingresa el ID del usuario: ");
+            if (scanf("%d", &id) != 1)
+            {
+                printf("Error: ID no valido.\n");
+                while (getchar() != '\n')
+                    ; // Limpiar buffer
+                break;
+            }
+            user = getUserById(id);
+            if (!user)
+            {
+                printf("Usuario no encontrado.\n");
+            }
+            else
+            {
+                showUser(user);
+            }
+            break;
+        case 2:
+            char name[50];
+            printf("ingresa el ID del usuario: ");
+            scanf("%49s", name); // Limitar a 49 caracteres
+            user = getUserByName(name);
+            if (!user)
+            {
+                printf("Usuario no encontrado.\n");
+            }
+            else
+            {
+                showUser(user);
+            }
+            break;
+        default:
+            break;
+        }
+    } while (option != 0);
 }
 
 void updateUser()
@@ -106,7 +163,7 @@ void updateUser()
         break;
 
     default:
-        printf("Opción inválida.\n");
+        printf("Opcion invalida.\n");
         break;
     }
 }
@@ -125,7 +182,6 @@ void deleteUser()
 
 void handleMenuUser()
 {
-    User user;
     int option;
     do
     {
@@ -140,8 +196,7 @@ void handleMenuUser()
             showUsers();
             break;
         case 3:
-            //? por implementar
-            printf("buscar usuario");
+            searchUser();
             break;
         case 4:
             updateUser();
@@ -150,7 +205,7 @@ void handleMenuUser()
             deleteUser();
             break;
         case 0:
-            printf("Regresando al menú principal...\n");
+            printf("Regresando al menu principal...\n");
             break;
         default:
             printf("Opcion no valida. Intente nuevamente.\n");

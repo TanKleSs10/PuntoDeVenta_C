@@ -99,7 +99,18 @@ void inputUserDataForUpdate(User *user)
     } while (strlen(user->pass) == 0);
 }
 
-void showUserData(const User *users, int size)
+void showUser(const User *user)
+{
+    printf("\n--- Usuario ---\n");
+    printf("ID: %d\n", user->id);
+    printf("Nombre: %s\n", user->name);
+    printf("Rol: %d\n", user->role);
+    printf("Password: %s\n", user->pass);
+    printf("Fecha de creacion: %s\n", ctime(&user->created_at));
+    printf("Fecha de modificacion: %s\n", ctime(&user->updated_at));
+}
+
+void showUsersData(const User *users, int size)
 {
     if (size == 0)
     {
@@ -110,8 +121,7 @@ void showUserData(const User *users, int size)
     printf("\n--- Lista de Usuarios ---\n");
     for (int i = 0; i < size; i++)
     {
-        printf("ID: %d | Nombre del usuario: %s | Rol: %d\n | Password: %s\n",
-               users[i].id, users[i].name, users[i].role, users[i].pass);
+        showUser(&users[i]);
     }
 }
 
@@ -165,7 +175,7 @@ void showMenuUser()
 void showMenuSearchUser()
 {
     printf("\nOpciones de busqueda de usuarios:\n");
-    printf("Buscar usuario por ID\n");
-    printf("Buscar usuario por nombre\n");
-    printf("Salir\n");
+    printf("1. Buscar usuario por ID\n");
+    printf("2. Buscar usuario por nombre\n");
+    printf("0. Salir\n");
 }

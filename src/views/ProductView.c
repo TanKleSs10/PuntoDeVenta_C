@@ -198,5 +198,5 @@ void showMenuSearchProduct()
     printf("1. Buscar producto por ID\n");
     printf("2. Buscar producto por nombre\n");
     printf("3. Buscar producto por codigo de barras\n");
-    printf("Salir\n");
+    printf("0. Salir\n");
 }

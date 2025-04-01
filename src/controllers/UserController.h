@@ -11,5 +11,6 @@ void showUsers();      // Mostrar usuarios
 void updateUser();     // Actualizar usuario
 void deleteUser();     // Eliminar usuario
 void handleMenuUser(); // gestiona las opciones del modulo usuario
+void searchUser();
 
 #endif
