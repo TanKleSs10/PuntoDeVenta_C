@@ -1,5 +1,6 @@
 #include "includes/config.controller.h"
 #include "../users/includes/user.service.h"
+#include "../users/includes/user.ui.h"
 #include "includes/config.service.h"
 #include "includes/config.ui.h"
 
@@ -8,20 +9,24 @@
 
 void create_config_controller() {
   ConfigSystem config;
-
+  User u;
   if (get_config_service() != NULL) {
     printf("El Sistema ya está configurado.\n");
     return;
   }
 
-  create_config_ui(&config, 0);
-  if (create_config_service(config) == -1) {
-    printf("Error al crear la configuración del sistema.\n");
+  create_config_ui(&config);
+  create_user_ui(&u, 1);
+
+  if (create_user_service(u) == -1) {
+    printf("Error al crear el usuario administrador.\n");
     exit(EXIT_FAILURE);
   }
 
-  if (create_user_service(config.admin) == -1) {
-    printf("Error al crear el usuario administrador.\n");
+  config.admin_id = u.id;
+
+  if (create_config_service(config) == -1) {
+    printf("Error al crear la configuración del sistema.\n");
     exit(EXIT_FAILURE);
   }
 
@@ -43,12 +48,14 @@ void update_config_controller() {
 
 void get_config_controller() {
   ConfigSystem *config = get_config_service();
+  User *u = find_user_by_id_service(config->admin_id);
+
   if (!config) {
     printf("Error al obtener la configuración del sistema.\n");
     return;
   }
 
-  get_config_ui(config);
+  get_config_ui(config, u->username);
 }
 
 void delete_config_controller() {

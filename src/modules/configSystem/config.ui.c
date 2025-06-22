@@ -1,6 +1,5 @@
 #include "includes/config.ui.h"
 #include "../../utils/utils.h"
-#include "../users/includes/user.ui.h"
 #include "includes/config.model.h"
 #include <stdbool.h>
 #include <stdio.h>
@@ -8,7 +7,7 @@
 
 #define MAX_INPUT 100
 
-int create_config_ui(ConfigSystem *config, int isUpdate) {
+int create_config_ui(ConfigSystem *config) {
   char input[MAX_INPUT];
   bool valid_input;
 
@@ -63,24 +62,88 @@ int create_config_ui(ConfigSystem *config, int isUpdate) {
     }
   } while (!valid_input);
 
-  if (isUpdate != 1) {
-    // Superadmin
-    create_user_ui(&config->admin, 1);
-  }
-
   return 0;
 }
 
-void update_config_ui(ConfigSystem *config) {
-  printf("Actualizando configuración de sistema...\n");
-  create_config_ui(config, 0);
+void update_config_ui(ConfigSystem *update) {
+  char input[MAX_INPUT];
+  bool valid_input;
+
+  printf("\n=== Actualización de Configuración del Sistema ===\n");
+
+  // Por defecto, marcar todos los campos como "sin cambios"
+  strcpy(update->bussinesName, ""); // <- "" indica que no se quiere actualizar
+  update->taxes = -1.0f;            // <- valor inválido como marcador
+  strcpy(update->currency, "");     // <- "" indica que no se quiere actualizar
+
+  // Nombre de empresa
+  printf("¿Deseas actualizar el nombre de la empresa? (S/N): ");
+  get_line_input(input, MAX_INPUT);
+  if (input[0] == 'S' || input[0] == 's') {
+    do {
+      printf("Ingresa el nuevo nombre (3 a 50 caracteres): ");
+      get_line_input(update->bussinesName, sizeof(update->bussinesName));
+      size_t len = strlen(update->bussinesName);
+      valid_input = (len >= 3 && len <= 50);
+      if (!valid_input) {
+        printf("El nombre debe tener entre 3 y 50 caracteres.\n");
+      }
+    } while (!valid_input);
+  }
+
+  // Impuestos
+  printf("¿Deseas actualizar el porcentaje de impuestos? (S/N): ");
+  get_line_input(input, MAX_INPUT);
+  if (input[0] == 'S' || input[0] == 's') {
+    do {
+      printf("Ingresa el nuevo porcentaje de impuestos (0.00 - 100.00): ");
+      get_line_input(input, MAX_INPUT);
+      valid_input = (sscanf(input, "%f", &update->taxes) == 1 &&
+                     update->taxes >= 0 && update->taxes <= 100);
+      if (!valid_input) {
+        printf("Porcentaje inválido. Intenta de nuevo.\n");
+      }
+    } while (!valid_input);
+  }
+
+  // Moneda
+  printf("¿Deseas actualizar la moneda? (S/N): ");
+  get_line_input(input, MAX_INPUT);
+  if (input[0] == 'S' || input[0] == 's') {
+    int option = 0;
+    do {
+      printf("Selecciona la nueva moneda:\n 1: MXN\n 2: USD\n 3: EUR\n");
+      printf("Tu opción: ");
+      get_line_input(input, MAX_INPUT);
+      valid_input =
+          (sscanf(input, "%d", &option) == 1 && option >= 1 && option <= 3);
+      if (!valid_input) {
+        printf("Opción inválida. Intenta de nuevo.\n");
+      }
+    } while (!valid_input);
+
+    switch (option) {
+    case 1:
+      strcpy(update->currency, "MXN");
+      break;
+    case 2:
+      strcpy(update->currency, "USD");
+      break;
+    case 3:
+      strcpy(update->currency, "EUR");
+      break;
+    }
+  }
+
+  // admin_id nunca se actualiza desde la UI
+  update->admin_id = -1; // El service usará el actual
 }
 
-void get_config_ui(ConfigSystem *config) {
+void get_config_ui(ConfigSystem *config, const char *username) {
   printf("Nombre de la empresa: %s\n", config->bussinesName);
   printf("Porcentaje de impuestos: %.2f%%\n", config->taxes);
   printf("Moneda: %s\n", config->currency);
-  printf("Superadmin: %s\n", config->admin.username);
+  printf("Superadmin: %s\n", username);
 }
 
 int delete_config_ui() {

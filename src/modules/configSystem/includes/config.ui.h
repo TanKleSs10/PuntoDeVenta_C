@@ -3,9 +3,9 @@
 
 #include "config.model.h"
 
-int create_config_ui(ConfigSystem *config, int isUpdate);
-void update_config_ui(ConfigSystem *config);
-void get_config_ui(ConfigSystem *config);
+int create_config_ui(ConfigSystem *config);
+void update_config_ui(ConfigSystem *update);
+void get_config_ui(ConfigSystem *config, const char *username);
 int delete_config_ui();
 void menu_config_ui();
 
