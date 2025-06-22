@@ -1,0 +1,87 @@
+[2025-06-22 08:35:45] [ERROR] No se pudo abrir el archivo 'data/auth.dat': No such file or directory
+[2025-06-22 08:35:45] [WARNING] No se encontró sesión activa al intentar leer data/auth.dat
+[2025-06-22 08:35:45] [WARNING] get_session_service: No existe una sesión activa.
+[2025-06-22 08:35:56] [INFO] Usuario con nombre de usuario 'diego' encontrado.
+[2025-06-22 08:36:11] [WARNING] No se encontró el usuario con nombre de usuario 'Deigo meza'.
+[2025-06-22 08:36:11] [WARNING] No se encontró usuario con nombre de usuario Deigo meza
+[2025-06-22 08:36:23] [WARNING] No se encontró el usuario con nombre de usuario 'admin'.
+[2025-06-22 08:36:23] [WARNING] No se encontró usuario con nombre de usuario admin
+[2025-06-22 08:37:08] [ERROR] No se pudo abrir el archivo 'data/config.dat': No such file or directory
+[2025-06-22 08:37:08] [ERROR] No se pudo abrir el archivo data/config.dat para obtener la configuración.
+[2025-06-22 08:37:08] [WARNING] No se encontró ninguna configuración del sistema.
+[2025-06-22 08:37:34] [ERROR] Fallo al escribir la configuración en data/config.dat
+[2025-06-22 08:37:34] [ERROR] No se pudo guardar la configuración del sistema.
+[2025-06-22 08:37:34] [ERROR] No se pudo abrir el archivo 'data/auth.dat': No such file or directory
+[2025-06-22 08:37:34] [WARNING] No se encontró sesión activa al intentar leer data/auth.dat
+[2025-06-22 08:37:34] [WARNING] get_session_service: No existe una sesión activa.
+[2025-06-22 08:37:55] [ERROR] No se pudo abrir el archivo 'data/users.dat': No such file or directory
+[2025-06-22 08:37:55] [ERROR] No se pudo abrir el archivo data/users.dat para buscar el usuario.
+[2025-06-22 08:37:55] [WARNING] No se encontró usuario con nombre de usuario diego
+[2025-06-22 08:39:18] [ERROR] No se pudo abrir el archivo 'data/users.dat': No such file or directory
+[2025-06-22 08:39:18] [ERROR] No se pudo abrir el archivo data/users.dat para buscar el usuario.
+[2025-06-22 08:39:18] [WARNING] No se encontró usuario con nombre de usuario diego
+[2025-06-22 08:39:25] [ERROR] No se pudo abrir el archivo 'data/users.dat': No such file or directory
+[2025-06-22 08:39:25] [ERROR] No se pudo abrir el archivo data/users.dat para buscar el usuario.
+[2025-06-22 08:39:25] [WARNING] No se encontró usuario con nombre de usuario diego
+[2025-06-22 08:41:58] [ERROR] No se pudo abrir el archivo 'data/config.dat': No such file or directory
+[2025-06-22 08:41:58] [ERROR] No se pudo abrir el archivo data/config.dat para obtener la configuración.
+[2025-06-22 08:41:58] [WARNING] No se encontró ninguna configuración del sistema.
+[2025-06-22 08:42:27] [ERROR] No se pudo guardar la configuración del sistema.
+[2025-06-22 08:42:27] [ERROR] No se pudo abrir el archivo 'data/auth.dat': No such file or directory
+[2025-06-22 08:42:27] [WARNING] No se encontró sesión activa al intentar leer data/auth.dat
+[2025-06-22 08:42:27] [WARNING] get_session_service: No existe una sesión activa.
+[2025-06-22 09:42:17] [ERROR] No se pudo abrir el archivo 'data/config.dat': No such file or directory
+[2025-06-22 09:42:17] [ERROR] No se pudo abrir el archivo data/config.dat para obtener la configuración.
+[2025-06-22 09:42:17] [WARNING] No se encontró ninguna configuración del sistema.
+[2025-06-22 09:43:06] [INFO] Configuración guardada correctamente en data/config.dat
+[2025-06-22 09:43:06] [INFO] Configuración del sistema guardada correctamente.
+[2025-06-22 09:43:06] [ERROR] No se pudo abrir el archivo 'data/users.dat': No such file or directory
+[2025-06-22 09:43:06] [ERROR] No se pudo abrir el archivo data/users.dat para obtener el usuario.
+[2025-06-22 09:43:06] [INFO] Usuario con ID 1 guardado correctamente.
+[2025-06-22 09:43:06] [INFO] Usuario con ID 1 creado correctamente.
+[2025-06-22 09:43:06] [ERROR] No se pudo abrir el archivo 'data/auth.dat': No such file or directory
+[2025-06-22 09:43:06] [WARNING] No se encontró sesión activa al intentar leer data/auth.dat
+[2025-06-22 09:43:06] [WARNING] get_session_service: No existe una sesión activa.
+[2025-06-22 09:43:13] [WARNING] No se encontró el usuario con nombre de usuario 'dieg'.
+[2025-06-22 09:43:13] [WARNING] No se encontró usuario con nombre de usuario dieg
+[2025-06-22 09:47:43] [ERROR] No se pudo abrir el archivo 'data/config.dat': No such file or directory
+[2025-06-22 09:47:43] [ERROR] No se pudo abrir el archivo data/config.dat para obtener la configuración.
+[2025-06-22 09:47:43] [WARNING] No se encontró ninguna configuración del sistema.
+[2025-06-22 09:48:22] [INFO] Configuración guardada correctamente en data/config.dat
+[2025-06-22 09:48:22] [INFO] Configuración del sistema guardada correctamente.
+[2025-06-22 09:48:22] [ERROR] No se pudo abrir el archivo 'data/users.dat': No such file or directory
+[2025-06-22 09:48:22] [ERROR] No se pudo abrir el archivo data/users.dat para obtener el usuario.
+[2025-06-22 09:48:22] [INFO] Usuario con ID 1 guardado correctamente.
+[2025-06-22 09:48:22] [INFO] Usuario con ID 1 creado correctamente.
+[2025-06-22 09:48:22] [ERROR] No se pudo abrir el archivo 'data/auth.dat': No such file or directory
+[2025-06-22 09:48:22] [WARNING] No se encontró sesión activa al intentar leer data/auth.dat
+[2025-06-22 09:48:22] [WARNING] get_session_service: No existe una sesión activa.
+[2025-06-22 09:48:31] [INFO] Usuario con nombre de usuario 'diego' encontrado.
+[2025-06-22 09:48:31] [INFO] Sesión guardada correctamente en data/auth.dat
+[2025-06-22 09:48:31] [INFO] create_session_service: Sesión creada correctamente.
+[2025-06-22 09:48:31] [ERROR] Error al leer la sesión desde data/auth.dat
+[2025-06-22 09:48:31] [WARNING] get_session_service: No existe una sesión activa.
+[2025-06-22 09:52:14] [INFO] get_session_service: Sesión obtenida correctamente.
+[2025-06-22 09:52:14] [INFO] get_session_service: Sesión obtenida correctamente.
+[2025-06-22 09:52:51] [INFO] Configuración actualizada correctamente en data/config.dat
+[2025-06-22 09:52:51] [ERROR] No se pudo actualizar la configuración del sistema.
+[2025-06-22 10:45:24] [INFO] get_session_service: Sesión obtenida correctamente.
+[2025-06-22 10:45:24] [INFO] get_session_service: Sesión obtenida correctamente.
+[2025-06-22 10:45:49] [INFO] Configuración actualizada correctamente en data/config.dat
+[2025-06-22 10:45:49] [INFO] Configuración del sistema actualizada correctamente.
+[2025-06-22 10:46:06] [INFO] Configuración actualizada correctamente en data/config.dat
+[2025-06-22 10:46:06] [INFO] Configuración del sistema actualizada correctamente.
+[2025-06-22 10:46:57] [INFO] get_session_service: Sesión obtenida correctamente.
+[2025-06-22 10:46:57] [INFO] get_session_service: Sesión obtenida correctamente.
+[2025-06-22 10:47:35] [INFO] Configuración actualizada correctamente en data/config.dat
+[2025-06-22 10:47:35] [INFO] Configuración del sistema actualizada correctamente.
+[2025-06-22 10:47:49] [INFO] Se listaron 10 usuario(s) desde el repositorio.
+[2025-06-22 10:47:49] [INFO] Se listaron 10 usuarios correctamente.
+[2025-06-22 10:50:53] [INFO] Configuración actualizada correctamente en data/config.dat
+[2025-06-22 10:50:53] [INFO] Configuración del sistema actualizada correctamente.
+[2025-06-22 10:51:25] [INFO] Configuración actualizada correctamente en data/config.dat
+[2025-06-22 10:51:25] [INFO] Configuración del sistema actualizada correctamente.
+[2025-06-22 10:51:53] [INFO] Configuración actualizada correctamente en data/config.dat
+[2025-06-22 10:51:53] [INFO] Configuración del sistema actualizada correctamente.
+[2025-06-22 10:52:04] [INFO] Se listaron 10 usuario(s) desde el repositorio.
+[2025-06-22 10:52:04] [INFO] Se listaron 10 usuarios correctamente.
