@@ -1,54 +1,13 @@
 #include "includes/user.service.h"
 #include "../../utils/logger.h"
-#include "../../utils/utils.h"
+#include "includes/user.model.h"
 #include "includes/user.repository.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#define MIN_ID 0
-#define MAX_ID 100
 #define MIN_USERNAME_LEN 3
 #define MAX_USERNAME_LEN 20
-#define MIN_PASSWORD_LEN 3
-#define MAX_PASSWORD_LEN 20
-
-static int validate_user_data(User user, int check_id_existence) {
-  if (user.id < MIN_ID || user.id > MAX_ID) {
-    LOG_WARNING("El ID debe estar entre %d y %d", MIN_ID, MAX_ID);
-    return -1;
-  }
-
-  if (strlen(user.username) < MIN_USERNAME_LEN ||
-      strlen(user.username) > MAX_USERNAME_LEN) {
-    LOG_WARNING("El nombre de usuario debe tener entre %d y %d caracteres",
-                MIN_USERNAME_LEN, MAX_USERNAME_LEN);
-    return -1;
-  }
-
-  if (strlen(user.password) < MIN_PASSWORD_LEN ||
-      strlen(user.password) > MAX_PASSWORD_LEN) {
-    LOG_WARNING("La contraseña debe tener entre %d y %d caracteres",
-                MIN_PASSWORD_LEN, MAX_PASSWORD_LEN);
-    return -1;
-  }
-
-  if (!role_to_string(user.role)) {
-    LOG_WARNING("Rol inválido. Solo se permiten ADMIN, CASHIER o SUPERADMIN.");
-    return -1;
-  }
-
-  if (check_id_existence) {
-    User *existing = get_user_by_id(user.id);
-    if (existing != NULL) {
-      LOG_WARNING("Ya existe un usuario con ID %d", user.id);
-      free(existing);
-      return -1;
-    }
-  }
-
-  return 0;
-}
 
 int create_user_service(User user) {
 
@@ -59,21 +18,38 @@ int create_user_service(User user) {
   return result;
 }
 
-int update_user_service(User user) {
-  if (get_user_by_id(user.id) == NULL) {
-    LOG_WARNING("No existe usuario con ID %d para actualizar.", user.id);
+int update_user_service(User *user, int id) {
+  User *current = get_user_by_id(id);
+  if (current == NULL) {
+    LOG_WARNING("No existe usuario con ID %d para actualizar.", id);
+    free(current);
     return -1;
   }
 
-  if (validate_user_data(user, 0) != 0)
-    return -1;
+  // Mismo ID ya que ese no se puede modificar
+  user->id = current->id;
+
+  // actualizar campos
+  if (strlen(user->username) == 0) {
+    strcpy(user->username, current->username);
+  }
+
+  if (strlen(user->password) == 0) {
+    strcpy(user->password, current->password);
+  }
+
+  if (user->role < 0) {
+    user->role = current->role;
+  }
 
   int result = update_user(user);
   if (result == 0) {
-    LOG_INFO("Usuario con ID %d actualizado correctamente.", user.id);
+    LOG_INFO("Usuario con ID %d actualizado correctamente.", user->id);
   } else {
-    LOG_ERROR("Error al actualizar el usuario con ID %d", user.id);
+    LOG_ERROR("Error al actualizar el usuario con ID %d", user->id);
   }
+
+  free(current);
   return result;
 }
 

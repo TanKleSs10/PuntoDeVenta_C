@@ -20,9 +20,14 @@ int create_user_controller() {
 
 int update_user_controller() {
   User user;
+  int id;
+
+  find_user_by_id_ui(&user);
+
+  id = user.id;
 
   update_user_ui(&user);
-  if (update_user_service(user) != 0) {
+  if (update_user_service(&user, id) != 0) {
     printf("No se pudo actualizar el usuario.\n");
     return -1;
   }
@@ -105,6 +110,7 @@ void menu_user_controller(Auth *session) {
   char input[MAX_INPUT];
 
   do {
+    clear_screen();
     menu_users_ui();
 
     get_line_input(input, MAX_INPUT);

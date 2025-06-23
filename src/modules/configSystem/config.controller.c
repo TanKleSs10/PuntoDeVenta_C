@@ -1,4 +1,5 @@
 #include "includes/config.controller.h"
+#include "../../utils/utils.h"
 #include "../users/includes/user.service.h"
 #include "../users/includes/user.ui.h"
 #include "includes/config.service.h"
@@ -11,7 +12,9 @@ void create_config_controller() {
   ConfigSystem config;
   User u;
   if (get_config_service() != NULL) {
-    printf("El Sistema ya está configurado.\n");
+    printf("El Sistema ya está configurado.\nIniciando sistema... \n");
+    delay_ms(2000);
+    clear_screen();
     return;
   }
 
@@ -76,6 +79,7 @@ void delete_config_controller() {
 void menu_config_controller(Auth *session) {
   int option = 0;
   do {
+    clear_screen();
     menu_config_ui();
     scanf("%d", &option);
     getchar(); // Limpiar newline

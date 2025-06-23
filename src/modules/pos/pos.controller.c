@@ -1,5 +1,6 @@
 #include "includes/pos.controller.h"
 #include "../../utils/logger.h"
+#include "../../utils/utils.h"
 #include "../configSystem/includes/config.model.h"
 #include "../configSystem/includes/config.service.h"
 #include "../products/includes/product.service.h"
@@ -149,6 +150,7 @@ void run_pos_controller() {
   int option;
 
   while (true) {
+    clear_screen();
     option = show_pos_menu_ui(); // Muestra menú y obtiene opción
 
     switch (option) {

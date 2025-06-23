@@ -1,6 +1,8 @@
 #include "./includes/menu.ui.h"
 #include "../../utils/utils.h"
+#include "../authentication/includes/auth.controller.h"
 #include "../authorization/includes/authz.h"
+#include "../configSystem/includes/config.service.h"
 #include <stdio.h>
 
 // Acciones simples para test
@@ -50,16 +52,35 @@ void show_menu_ui(const Auth *session) {
   }
 }
 
+void inf_menu_ui(ConfigSystem c, Auth a) {
+  printf("\n--- Info del Sistema ---\n");
+  printf("Negocio: %s\n", c.bussinesName);
+  printf("Usuario: %s\n", a.user.username);
+  printf("Rol: %s\n", role_to_string(a.user.role));
+  printf("------------------------\n");
+}
+
 void main_menu(Auth *session) {
+  ConfigSystem *c;
+  c = get_config_service();
+
   int option = 0;
   char input[MAX_INPUT];
 
   do {
+    clear_screen();
+    printf("\n--- Info del Sistema ---\n");
+    printf("Negocio: %s\n", c->bussinesName);
+    printf("Usuario: %s\n", session->user.username);
+    printf("Rol: %s\n", role_to_string(session->user.role));
+    printf("------------------------\n");
+
     printf("\n=== Menú Principal ===\n");
     printf("1. Gestión de usuarios\n");
     printf("2. Gestión de productos\n");
     printf("3. Configuración del sistema\n");
     printf("4. Punto de venta (POS)\n");
+    printf("5. Cerrar sessión\n");
     printf("0. Salir\n");
     printf("Seleccione una opción: ");
 
@@ -81,6 +102,12 @@ void main_menu(Auth *session) {
       break;
     case 4:
       run_pos_controller(); // ← acceso libre
+      break;
+    case 5:
+      logout_controller();
+      delay_ms(2000);
+      clear_screen();
+      option = 0;
       break;
     case 0:
       printf("Saliendo del sistema...\n");

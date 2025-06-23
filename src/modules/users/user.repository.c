@@ -90,12 +90,16 @@ User *get_user_by_username(char *username) {
   return NULL;
 }
 
-int update_user(User user) {
+int update_user(User *user) {
   FILE *original = open_file(USER_FILE, "rb");
   FILE *temp = open_file(TEMP_FILE, "wb");
   if (!original || !temp) {
     LOG_ERROR("Error al abrir archivos para actualizar el usuario con ID %d.",
-              user.id);
+              user->id);
+    if (original)
+      fclose(original); // Cerrar si se abrió
+    if (temp)
+      fclose(temp); // Cerrar si se abrió
     return -1;
   }
 
@@ -103,8 +107,8 @@ int update_user(User user) {
   int updated = 0;
 
   while (read_record(original, &current, sizeof(User)) == 0) {
-    if (current.id == user.id) {
-      write_record(temp, &user, sizeof(User));
+    if (current.id == user->id) {
+      write_record(temp, user, sizeof(User));
       updated = 1;
     } else {
       write_record(temp, &current, sizeof(User));
@@ -117,16 +121,16 @@ int update_user(User user) {
   if (remove(USER_FILE) != 0 || rename(TEMP_FILE, USER_FILE) != 0) {
     LOG_ERROR("Error al reemplazar el archivo original tras actualizar usuario "
               "con ID %d.",
-              user.id);
+              user->id);
     return -1;
   }
 
   if (updated) {
-    LOG_INFO("Usuario con ID %d actualizado correctamente.", user.id);
+    LOG_INFO("Usuario con ID %d actualizado correctamente.", user->id);
     return 0;
   } else {
     LOG_WARNING("No se encontró el usuario con ID %d para actualizar.",
-                user.id);
+                user->id);
     return -1;
   }
 }

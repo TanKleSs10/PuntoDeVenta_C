@@ -1,4 +1,5 @@
 #include "includes/product.controller.h"
+#include "../../utils/utils.h"
 #include "includes/product.service.h"
 #include "includes/product.ui.h"
 #include <stdio.h>
@@ -128,6 +129,7 @@ void delete_product_controller() {
 void menu_products_controller(Auth *session) {
   int option = 0;
   do {
+    clear_screen();
     menu_products_ui();
     scanf("%d", &option);
     getchar(); // Limpiar newline
