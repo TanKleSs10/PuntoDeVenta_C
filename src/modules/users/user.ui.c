@@ -2,8 +2,6 @@
 #include <stdbool.h> // Para bool
 #include <string.h>  // Para strlen
 
-#define MAX_INPUT 100
-
 void create_user_ui(User *user, int superadmin) {
   char input[MAX_INPUT];
   int role_input;
@@ -48,11 +46,17 @@ void create_user_ui(User *user, int superadmin) {
       printf("Ingresa el número correspondiente al rol: ");
       get_line_input(input, MAX_INPUT);
 
-      valid_input = (sscanf(input, "%d", &role_input) == 1 &&
+      int sscanf_result = sscanf(input, "%d", &role_input);
+      printf("DEBUG: sscanf_result=%d, role_input=%d\n", sscanf_result,
+             role_input);
+
+      valid_input = (sscanf_result == 1 &&
                      (role_input == ADMIN || role_input == CASHIER));
+      printf("DEBUG: valid_input=%d\n", valid_input);
 
       if (valid_input) {
         user->role = (UserRole)role_input;
+        printf("DEBUG: Rol asignado correctamente: %d\n", user->role);
       } else {
         printf("Rol inválido. Por favor, ingresa 1 (ADMIN) o 2 (CAJERO).\n");
       }

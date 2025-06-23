@@ -5,8 +5,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#define MAX_INPUT 100
-
 int create_config_ui(ConfigSystem *config) {
   char input[MAX_INPUT];
   bool valid_input;

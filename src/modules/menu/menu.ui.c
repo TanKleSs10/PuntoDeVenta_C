@@ -1,4 +1,5 @@
 #include "./includes/menu.ui.h"
+#include "../../utils/utils.h"
 #include "../authorization/includes/authz.h"
 #include <stdio.h>
 
@@ -51,6 +52,7 @@ void show_menu_ui(const Auth *session) {
 
 void main_menu(Auth *session) {
   int option = 0;
+  char input[MAX_INPUT];
 
   do {
     printf("\n=== Menú Principal ===\n");
@@ -60,8 +62,12 @@ void main_menu(Auth *session) {
     printf("4. Punto de venta (POS)\n");
     printf("0. Salir\n");
     printf("Seleccione una opción: ");
-    scanf("%d", &option);
-    getchar(); // limpiar '\n'
+
+    get_line_input(input, MAX_INPUT);
+
+    if (sscanf(input, "%d", &option) != 1) {
+      option = -1;
+    }
 
     switch (option) {
     case 1:

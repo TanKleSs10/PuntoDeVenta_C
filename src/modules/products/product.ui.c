@@ -4,8 +4,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#define MAX_INPUT 256 // Aumentar el tamaño para descripciones más largas
-
 void create_product_ui(Product *product) {
   char input[MAX_INPUT];
   bool valid_input;

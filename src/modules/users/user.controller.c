@@ -1,4 +1,5 @@
 #include "includes/user.controller.h"
+#include "../../utils/utils.h"
 #include "includes/user.service.h"
 #include "includes/user.ui.h"
 #include <stdio.h>
@@ -101,10 +102,18 @@ int delete_user_controller() {
 
 void menu_user_controller(Auth *session) {
   int option = 0;
+  char input[MAX_INPUT];
+
   do {
     menu_users_ui();
-    scanf("%d", &option);
-    getchar(); // Limpiar newline
+
+    get_line_input(input, MAX_INPUT);
+
+    // Intentar leer el entero de la cadena
+    if (sscanf(input, "%d", &option) != 1) {
+      // Si sscanf no pudo leer un entero, la entrada no es válida
+      option = -1; // Valor para activar el 'default' en el switch
+    }
 
     switch (option) {
     case 1:

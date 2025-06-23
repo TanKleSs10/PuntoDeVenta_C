@@ -1,6 +1,7 @@
 #include "file.component.h"
 #include "../utils/logger.h"
 #include <errno.h>
+#include <stdio.h> // Asegúrate de incluir <stdio.h> para FILE y feof/fread/fwrite
 #include <string.h>
 
 FILE *open_file(const char *path, const char *modo) {
@@ -20,14 +21,20 @@ int delete_file(const char *path) {
   return 0;
 }
 
+// *** FUNCIÓN read_record CORREGIDA ***
+// Retorna 0 en éxito, 1 en EOF, -1 en error
 int read_record(FILE *f, void *buffer, size_t size) {
-  if (fread(buffer, size, 1, f) != 1) {
-    if (feof(f))
-      return 0; // fin de archivo, no error
-    LOG_ERROR("Error al leer registro");
-    return -1;
+  size_t items_read = fread(buffer, size, 1, f);
+  if (items_read == 1) {
+    return 0; // Éxito: se leyó 1 elemento completo
+  } else {
+    if (feof(f)) {
+      return 1; // Fin de archivo
+    } else {    // ferror(f)
+      LOG_ERROR("Error al leer registro");
+      return -1; // Error de lectura
+    }
   }
-  return 0;
 }
 
 int write_record(FILE *f, const void *buffer, size_t size) {

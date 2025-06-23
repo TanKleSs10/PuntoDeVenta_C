@@ -13,6 +13,6 @@ void find_product_by_name_controller();
 void list_products_controller();
 void update_product_controller();
 void delete_product_controller();
-void menu_products_controller();
+void menu_products_controller(Auth *session);
 
 #endif

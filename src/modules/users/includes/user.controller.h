@@ -10,6 +10,6 @@ int find_user_by_id_controller();
 int find_user_by_username_controller();
 int list_users_controller();
 int delete_user_controller();
-void menu_user_controller();
+void menu_user_controller(Auth *session);
 
 #endif
