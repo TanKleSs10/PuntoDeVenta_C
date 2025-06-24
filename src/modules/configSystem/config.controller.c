@@ -80,6 +80,7 @@ void menu_config_controller(Auth *session) {
   int option = 0;
   do {
     clear_screen();
+
     menu_config_ui();
     scanf("%d", &option);
     getchar(); // Limpiar newline
@@ -88,6 +89,7 @@ void menu_config_controller(Auth *session) {
     case 1:
       if (has_permission(session, PERM_CONFIG_VIEW)) {
         get_config_controller();
+        press_enter_to_continue();
       } else {
         printf("No tienes permiso para ver la configuración.\n");
       }
@@ -95,6 +97,8 @@ void menu_config_controller(Auth *session) {
     case 2:
       if (session->user.role == 3) {
         update_config_controller();
+        press_enter_to_continue();
+
       } else {
         printf("Solo el Superadmin puede actualizar la configuración.\n");
       }
@@ -102,6 +106,8 @@ void menu_config_controller(Auth *session) {
     case 3:
       if (session->user.role == 3) {
         delete_config_controller();
+        press_enter_to_continue();
+
       } else {
         printf("Solo el Superadmin puede eliminar la configuración.\n");
       }

@@ -93,7 +93,6 @@ int show_confirm_product(Product *product) {
           "Entrada inválida. Por favor, ingrese 's' para sí o 'n' para no: ");
     }
   }
-  clear_input(); // Limpiar el buffer de entrada
   return (confirm == 's' || confirm == 'S') ? 1 : 0;
 }
 
@@ -117,9 +116,12 @@ int show_pos_menu_ui() {
   printf("Seleccione una opción: ");
 
   int option;
-  scanf("%d", &option);
-  while (getchar() != '\n')
-    ; // Limpiar buffer
+  char input[MAX_INPUT];
+
+  get_line_input(input, MAX_INPUT);
+  if (sscanf(input, "%d", &option) != 1) {
+    option = -1;
+  }
 
   return option;
 }

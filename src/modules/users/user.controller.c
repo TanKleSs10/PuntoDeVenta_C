@@ -125,6 +125,8 @@ void menu_user_controller(Auth *session) {
     case 1:
       if (has_permission(session, PERM_USER_MANAGE)) {
         create_user_controller();
+        press_enter_to_continue();
+
       } else {
         printf("No tienes permiso para crear usuarios.\n");
       }
@@ -132,6 +134,8 @@ void menu_user_controller(Auth *session) {
     case 2:
       if (has_permission(session, PERM_USER_MANAGE)) {
         list_users_controller();
+        press_enter_to_continue();
+
       } else {
         printf("No tienes permiso para ver usuarios.\n");
       }
@@ -139,6 +143,8 @@ void menu_user_controller(Auth *session) {
     case 3:
       if (has_permission(session, PERM_USER_MANAGE)) {
         find_user_by_id_controller();
+        press_enter_to_continue();
+
       } else {
         printf("No tienes permiso para buscar por ID.\n");
       }
@@ -146,6 +152,8 @@ void menu_user_controller(Auth *session) {
     case 4:
       if (has_permission(session, PERM_USER_MANAGE)) {
         find_user_by_username_controller();
+        press_enter_to_continue();
+
       } else {
         printf("No tienes permiso para buscar por nombre de usuario.\n");
       }
@@ -153,6 +161,8 @@ void menu_user_controller(Auth *session) {
     case 5:
       if (has_permission(session, PERM_USER_MANAGE)) {
         update_user_controller();
+        press_enter_to_continue();
+
       } else {
         printf("No tienes permiso para actualizar usuarios.\n");
       }
@@ -160,6 +170,8 @@ void menu_user_controller(Auth *session) {
     case 6:
       if (has_permission(session, PERM_USER_MANAGE)) {
         delete_user_controller();
+        press_enter_to_continue();
+
       } else {
         printf("No tienes permiso para eliminar usuarios.\n");
       }

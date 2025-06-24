@@ -40,6 +40,7 @@ CartItem *find_product_in_cart_service(Cart *cart, int product_id) {
 
 Breakdown calculate_breakdown_service(Cart *cart, float tax_rate) {
   Breakdown breakdown = {0};
+  float taxable_subtotal = 0.0f; // Subtotal for products subject to tax
 
   if (!cart) {
     LOG_ERROR("Carrito inválido en calculate_breakdown_service.");
@@ -50,46 +51,65 @@ Breakdown calculate_breakdown_service(Cart *cart, float tax_rate) {
     CartItem *item = cart->items[i];
     Product *product = item->product;
     int quantity = item->quantity;
-    float item_subtotal = 0.0f;
-    float item_savings = 0.0f;
+    float item_cost_for_subtotal =
+        0.0f; // Cost of this item's quantity for the subtotal
+    float item_savings_for_breakdown = 0.0f; // Savings for this item's quantity
 
+    // First, calculate the cost and savings for the current item based on its
+    // promo type
     switch (product->promo_type) {
     case PROMO_NONE:
-      item_subtotal = product->price * quantity;
+      item_cost_for_subtotal = product->price * quantity;
+      item_savings_for_breakdown = 0.0f; // No savings
       break;
 
     case PROMO_2X1:
-      item_subtotal = product->price * ((quantity / 2) + (quantity % 2));
-      item_savings = product->price * (quantity / 2);
+      // Customer pays for (quantity / 2) + (quantity % 2) items
+      // Gets (quantity / 2) items free
+      item_cost_for_subtotal =
+          product->price * ((quantity / 2) + (quantity % 2));
+      item_savings_for_breakdown = product->price * (quantity / 2);
       break;
 
     case PROMO_3X2:
-      item_subtotal = product->price * ((2 * (quantity / 3)) + (quantity % 3));
-      item_savings = product->price * (quantity / 3);
+      // Customer pays for (2 * (quantity / 3)) + (quantity % 3) items
+      // Gets (quantity / 3) items free
+      item_cost_for_subtotal =
+          product->price * ((2 * (quantity / 3)) + (quantity % 3));
+      item_savings_for_breakdown = product->price * (quantity / 3);
       break;
 
     case PROMO_NO_TAX:
-      item_subtotal = product->price * quantity;
-      // IVA no se suma para este producto
-      breakdown.tax -= (product->price * quantity) * tax_rate;
+      item_cost_for_subtotal = product->price * quantity;
+      item_savings_for_breakdown =
+          0.0f; // No direct price savings, just tax exemption
+      // Tax handling for this item is done outside the switch
       break;
 
     case PROMO_FIXED_DISCOUNT:
-      item_subtotal = (product->price - product->promo_value) * quantity;
-      item_savings = product->promo_value * quantity;
+      item_cost_for_subtotal =
+          (product->price - product->promo_value) * quantity;
+      item_savings_for_breakdown = product->promo_value * quantity;
       break;
     }
 
-    breakdown.subtotal += item_subtotal;
-    breakdown.savings += item_savings;
+    // Accumulate to the general subtotal (paid price of all items)
+    breakdown.subtotal += item_cost_for_subtotal;
+    breakdown.savings += item_savings_for_breakdown;
+
+    // Accumulate to the taxable subtotal ONLY if the product is NOT
+    // PROMO_NO_TAX
+    if (product->promo_type != PROMO_NO_TAX) {
+      taxable_subtotal += item_cost_for_subtotal;
+    }
   }
 
-  // Calculamos el impuesto de lo normal:
-  breakdown.tax += ((breakdown.subtotal) * tax_rate) / 100.0f;
-  ;
+  // Calculate tax based ONLY on the taxable subtotal
+  breakdown.tax = (taxable_subtotal * tax_rate) / 100.0f;
 
-  // Total final:
+  // Calculate the final total
   breakdown.total = breakdown.subtotal + breakdown.tax;
+
   return breakdown;
 }
 

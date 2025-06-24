@@ -110,6 +110,7 @@ void remove_product_flow(Cart *cart, ConfigSystem *config) {
 void finalize_sale_flow(Cart *cart, ConfigSystem *config) {
   if (!cart || !cart->items || cart->count == 0) {
     printf("[DEBUG]: Carrito vacío o no inicializado.\n");
+    press_enter_to_continue();
     return;
   }
 
@@ -128,15 +129,19 @@ void finalize_sale_flow(Cart *cart, ConfigSystem *config) {
       break;
     case -1:
       show_error_ui("Error interno al procesar la venta.");
+      press_enter_to_continue();
       return;
     case 0:
       generate_ticket_ui(cart, breakdown, payment, change,
                          config->bussinesName);
-      free_cart_service(cart);
+
       LOG_INFO("Venta finalizada correctamente.");
+      press_enter_to_continue(); // 👈 Esperar antes de limpiar
+      free_cart_service(cart);
       return;
     default:
       show_error_ui("Error desconocido al finalizar la venta.");
+      press_enter_to_continue();
       return;
     }
   }
@@ -148,39 +153,54 @@ void run_pos_controller() {
   ConfigSystem *config = get_config_service();
   Cart *cart = create_cart_service();
   int option;
+  bool venta_finalizada = false;
 
   while (true) {
-    clear_screen();
     option = show_pos_menu_ui(); // Muestra menú y obtiene opción
 
     switch (option) {
     case 1: // Agregar producto
+      clear_screen();
       add_product_flow(cart, config);
       break;
 
     case 2: // Eliminar producto
+      clear_screen();
       remove_product_flow(cart, config);
       break;
 
     case 3: // Ver carrito
+      clear_screen();
       Breakdown breakdown = calculate_breakdown_service(cart, config->taxes);
       show_cart_detail_ui(cart);
       show_cart_invoice_ui(breakdown.subtotal, breakdown.tax, breakdown.savings,
                            breakdown.total);
       break;
 
-    case 4:                             // Terminar venta
-      finalize_sale_flow(cart, config); // separamos esta parte
-      return;
+    case 4: // Terminar venta
+      clear_screen();
+      finalize_sale_flow(cart, config);
+      venta_finalizada = true; // ← Activamos la flag
+      break;
 
     case 5: // Cancelar venta
+      clear_screen();
       show_message_ui("Venta cancelada.");
+      press_enter_to_continue(); // ← UX-friendly
       free_cart_service(cart);
+      clear_screen();
       return;
 
     default:
       show_error_ui("Opción no válida. Intente de nuevo.");
       break;
+    }
+
+    // 💡 Si fue venta, salimos del loop
+    if (venta_finalizada) {
+      press_enter_to_continue(); // ← Espera antes de salir
+      clear_screen();            // ← Limpia ya con seguridad
+      return;
     }
   }
 }

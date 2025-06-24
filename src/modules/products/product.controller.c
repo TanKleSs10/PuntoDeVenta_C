@@ -130,6 +130,7 @@ void menu_products_controller(Auth *session) {
   int option = 0;
   do {
     clear_screen();
+
     menu_products_ui();
     scanf("%d", &option);
     getchar(); // Limpiar newline
@@ -138,6 +139,8 @@ void menu_products_controller(Auth *session) {
     case 1:
       if (has_permission(session, PERM_PRODUCT_CREATE)) {
         create_product_controller();
+        press_enter_to_continue();
+
       } else {
         printf("No tienes permiso para crear productos.\n");
       }
@@ -145,6 +148,8 @@ void menu_products_controller(Auth *session) {
     case 2:
       if (has_permission(session, PERM_PRODUCT_READ)) {
         list_products_controller();
+        press_enter_to_continue();
+
       } else {
         printf("No tienes permiso para ver productos.\n");
       }
@@ -152,6 +157,8 @@ void menu_products_controller(Auth *session) {
     case 3:
       if (has_permission(session, PERM_PRODUCT_READ)) {
         find_product_by_id_controller();
+        press_enter_to_continue();
+
       } else {
         printf("No tienes permiso para buscar por ID.\n");
       }
@@ -159,6 +166,8 @@ void menu_products_controller(Auth *session) {
     case 4:
       if (has_permission(session, PERM_PRODUCT_READ)) {
         find_product_by_barcode_controller();
+        press_enter_to_continue();
+
       } else {
         printf("No tienes permiso para buscar por código de barras.\n");
       }
@@ -166,6 +175,8 @@ void menu_products_controller(Auth *session) {
     case 5:
       if (has_permission(session, PERM_PRODUCT_UPDATE)) {
         update_product_controller();
+        press_enter_to_continue();
+
       } else {
         printf("No tienes permiso para actualizar productos.\n");
       }
@@ -173,6 +184,8 @@ void menu_products_controller(Auth *session) {
     case 6:
       if (has_permission(session, PERM_PRODUCT_DELETE)) {
         delete_product_controller();
+        press_enter_to_continue();
+
       } else {
         printf("No tienes permiso para eliminar productos.\n");
       }

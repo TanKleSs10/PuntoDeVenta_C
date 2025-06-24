@@ -4,6 +4,7 @@
 #include "../authorization/includes/authz.h"
 #include "../configSystem/includes/config.service.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 // Acciones simples para test
 void manage_users() { printf("-> Gestión de usuarios\n"); }
@@ -61,14 +62,13 @@ void inf_menu_ui(ConfigSystem c, Auth a) {
 }
 
 void main_menu(Auth *session) {
-  ConfigSystem *c;
-  c = get_config_service();
-
+  ConfigSystem *c = get_config_service();
   int option = 0;
   char input[MAX_INPUT];
 
   do {
-    clear_screen();
+    art_adminCore();
+
     printf("\n--- Info del Sistema ---\n");
     printf("Negocio: %s\n", c->bussinesName);
     printf("Usuario: %s\n", session->user.username);
@@ -80,7 +80,7 @@ void main_menu(Auth *session) {
     printf("2. Gestión de productos\n");
     printf("3. Configuración del sistema\n");
     printf("4. Punto de venta (POS)\n");
-    printf("5. Cerrar sessión\n");
+    printf("5. Cerrar sesión\n");
     printf("0. Salir\n");
     printf("Seleccione una opción: ");
 
@@ -92,28 +92,42 @@ void main_menu(Auth *session) {
 
     switch (option) {
     case 1:
+      clear_screen();
       menu_user_controller(session);
+      clear_screen();
       break;
     case 2:
+      clear_screen();
       menu_products_controller(session);
+      clear_screen();
       break;
     case 3:
+      clear_screen();
       menu_config_controller(session);
+      clear_screen();
       break;
     case 4:
-      run_pos_controller(); // ← acceso libre
+      clear_screen();
+      run_pos_controller();
+      clear_screen(); // ← Solo aquí, después de POS
       break;
     case 5:
       logout_controller();
-      delay_ms(2000);
+      printf("\nSesión cerrada exitosamente.\n");
+      press_enter_to_continue();
       clear_screen();
+      free(c);
       option = 0;
       break;
     case 0:
-      printf("Saliendo del sistema...\n");
+      printf("\nSaliendo del sistema...\n");
+      press_enter_to_continue();
+      free(c);
       break;
     default:
-      printf("Opción inválida.\n");
+      printf("\nOpción inválida. Intenta de nuevo.\n");
+      delay_ms(1000);
+      break;
     }
 
   } while (option != 0);
